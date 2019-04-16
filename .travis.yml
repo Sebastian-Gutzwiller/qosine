@@ -1,5 +1,11 @@
 language: cpp
 dist: xenial
-compiler:
-- gcc
+#compiler: gcc
 os: linux
+script:
+  - echo $PATH
+  - echo "Building Ubuntu GCC Natives"
+  - mkdir build
+  - cd build
+  - cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
+  - cmake --build . -- -v
