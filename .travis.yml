@@ -2,6 +2,8 @@ language: cpp
 dist: xenial
 #compiler: gcc
 os: linux
+before_install: 
+  - sudo apt install ninja-build
 script:
   - echo $PATH
   - echo "Building Ubuntu GCC Natives"
