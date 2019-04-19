@@ -33,8 +33,17 @@ endif()
 # Now simply link against gtest or gtest_main as needed. Eg
 cmake_minimum_required(VERSION 2.8)
 
-project(qosine)
+project(Qosine)
+set(Qosine_VERSION_MAJOR 0)
+set(Qosine_VERSION_MINOR 1)
+configure_file("${PROJECT_SOURCE_DIR}/QosineConfig.h.in" "${CMAKE_CURRENT_BINARY_DIR}/QosineConfig.h")
+include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+
 add_executable(${PROJECT_NAME} "main.cpp")
-#add_executable(example example.cpp)
+
 target_link_libraries(${PROJECT_NAME} gtest_main)
-add_test(NAME ${PROJECT_NAME}_test COMMAND ${PROJECT_NAME})
+
+enable_testing()
+
+add_test(QosineUsage ${PROJECT_NAME})
+set_tests_properties(QosineUsage PROPERTIES PASS_REGULAR_EXPRESSION "Version")

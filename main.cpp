@@ -1,9 +1,17 @@
-#include <iostream>
+#include <cstdio>
+#include "QosineConfig.h"
 
 using namespace std;
 
-int main()
+int main( int argc, char *argv[] )
 {
-    cout << "Hello World!" << endl;
-    return 0;
+    if ( argc == 1 )
+    {
+        fprintf( stdout, "%s Version %d.%d", argv[0], Qosine_VERSION_MAJOR, Qosine_VERSION_MINOR );
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
