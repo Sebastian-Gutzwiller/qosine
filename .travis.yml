@@ -1,12 +1,12 @@
 language: cpp
 dist: xenial
-#compiler: gcc
+compiler: clang
 os: linux
 before_install: 
   - sudo apt-get install ninja-build
 script:
   - echo $PATH
-  - echo "Building Ubuntu GCC Natives"
+  - echo "Building Ubuntu Xenial CLANG Natives"
   - mkdir build
   - cd build
   - cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
