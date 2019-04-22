@@ -1,3 +1,3 @@
 // the configured options and settings for Qosine
-#define Qosine_VERSION_MAJOR @Qosine_VERSION_MAJOR@
-#define Qosine_VERSION_MINOR @Qosine_VERSION_MINOR@
+#define Qosine_VERSION_MAJOR @CMAKE_PROJECT_VERSION_MAJOR@
+#define Qosine_VERSION_MINOR @CMAKE_PROJECT_VERSION_MINOR@

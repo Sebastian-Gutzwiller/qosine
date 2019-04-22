@@ -33,17 +33,21 @@ endif()
 # Now simply link against gtest or gtest_main as needed. Eg
 cmake_minimum_required(VERSION 2.8)
 
-project(Qosine)
-set(Qosine_VERSION_MAJOR 0)
-set(Qosine_VERSION_MINOR 1)
+cmake_policy(SET CMP0048 NEW)
+project(Qosine VERSION 0.1)
 configure_file("${PROJECT_SOURCE_DIR}/QosineConfig.h.in" "${CMAKE_CURRENT_BINARY_DIR}/QosineConfig.h")
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
-add_executable(${PROJECT_NAME} "main.cpp")
+add_executable(${PROJECT_NAME} "QosineRunUnitTests.cpp" "QosineWaveformLister.cpp")
 
-target_link_libraries(${PROJECT_NAME} gtest_main)
+target_link_libraries(${PROJECT_NAME} gtest)
 
-enable_testing()
+cmake_policy(SET CMP0054 NEW)
+include(GoogleTest)
 
-add_test(QosineUsage ${PROJECT_NAME})
-set_tests_properties(QosineUsage PROPERTIES PASS_REGULAR_EXPRESSION "Version")
+gtest_add_tests(TARGET ${PROJECT_NAME})
+#gtest_discover_tests(${PROJECT_NAME})
+
+#enable_testing()
+#add_test(QosineUsage ${PROJECT_NAME})
+#set_tests_properties(QosineUsage PROPERTIES PASS_REGULAR_EXPRESSION "Version")
