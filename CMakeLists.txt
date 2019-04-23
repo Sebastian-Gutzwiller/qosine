@@ -42,12 +42,12 @@ add_executable(${PROJECT_NAME} "QosineRunUnitTests.cpp" "QosineWaveformLister.cp
 
 target_link_libraries(${PROJECT_NAME} gtest)
 
+enable_testing()
+
 cmake_policy(SET CMP0054 NEW)
 include(GoogleTest)
 
-gtest_add_tests(TARGET ${PROJECT_NAME})
-#gtest_discover_tests(${PROJECT_NAME})
+gtest_discover_tests(${PROJECT_NAME})
 
-#enable_testing()
 #add_test(QosineUsage ${PROJECT_NAME})
 #set_tests_properties(QosineUsage PROPERTIES PASS_REGULAR_EXPRESSION "Version")
