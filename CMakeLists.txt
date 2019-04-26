@@ -35,10 +35,22 @@ cmake_minimum_required(VERSION 2.8)
 
 cmake_policy(SET CMP0048 NEW)
 project(Qosine VERSION 0.1)
-configure_file("${PROJECT_SOURCE_DIR}/QosineConfig.h.in" "${CMAKE_CURRENT_BINARY_DIR}/QosineConfig.h")
-include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
-add_executable(${PROJECT_NAME} "QosineRunUnitTests.cpp" "QosineWaveformLister.cpp")
+if(CODE_COVERAGE)
+if("${CMAKE_C_COMPILER_ID}" MATCHES "[Cc]lang" OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "[Cc]lang")
+  message("Building with llvm Code Coverage Tools")
+
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
+else()
+  message(FATAL_ERROR "Code coverage requires Clang. Aborting.")
+endif()
+endif()
+
+configure_file("${PROJECT_SOURCE_DIR}/QosineConfig.h.in" "${PROJECT_SOURCE_DIR}/QosineConfig.h")
+#include_directories("${CMAKE_CURRENT_BINARY_DIR}")
+
+add_executable(${PROJECT_NAME} "${PROJECT_SOURCE_DIR}/QosineRunUnitTests.cpp" "${PROJECT_SOURCE_DIR}/QosineWaveformLister.cpp")
 
 target_link_libraries(${PROJECT_NAME} gtest)
 
@@ -48,6 +60,16 @@ cmake_policy(SET CMP0054 NEW)
 include(GoogleTest)
 
 gtest_discover_tests(${PROJECT_NAME})
+
+if(CODE_COVERAGE)
+if("${CMAKE_C_COMPILER_ID}" MATCHES "[Cc]lang" OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "[Cc]lang")
+  add_custom_command(TARGET ${PROJECT_NAME}
+    POST_BUILD
+    COMMAND ./${PROJECT_NAME}
+    COMMAND llvm-profdata merge -sparse default.profraw -o ../${PROJECT_NAME}.profdata
+    COMMAND llvm-cov report ./${PROJECT_NAME} -instr-profile=../${PROJECT_NAME}.profdata)
+endif()
+endif()
 
 #add_test(QosineUsage ${PROJECT_NAME})
 #set_tests_properties(QosineUsage PROPERTIES PASS_REGULAR_EXPRESSION "Version")
